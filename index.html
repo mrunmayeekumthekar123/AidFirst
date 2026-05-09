@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AidFirst — Because Emergencies Don't Speak One Language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #C0392B;
+    --red-dark: #96281B;
+    --red-light: #E74C3C;
+    --cream: #FDF8F3;
+    --ink: #1A1208;
+    --muted: #7A6B5A;
+    --border: #E8DDD0;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(253, 248, 243, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--red);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--ink); }
+  .nav-link {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--red);
+    color: white;
+    padding: 9px 22px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(192,57,43,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(192,57,43,0.08);
+    border: 1px solid rgba(192,57,43,0.2);
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 7vw, 88px);
+    line-height: 1.05;
+    color: var(--ink);
+    max-width: 900px;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.35s;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--red);
+  }
+  .hero-subtitle {
+    font-size: clamp(16px, 2.2vw, 20px);
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.65;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.5s;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.65s;
+  }
+  .btn-primary {
+    background: var(--red);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(192,57,43,0.25);
+  }
+  .btn-primary:hover {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(192,57,43,0.35);
+  }
+  .btn-secondary {
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 400;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--red); border-color: var(--red); }
+  .hero-langs {
+    margin-top: 64px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.8s;
+  }
+  .lang-tag {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 100px;
+  }
+  .lang-sep { color: var(--border); font-size: 18px; }
+
+  /* STORY */
+  .story {
+    padding: 100px 24px;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 20px;
+    display: block;
+  }
+  .story-quote {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(22px, 3.5vw, 32px);
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  .story-quote em { font-style: italic; color: var(--muted); }
+  .story-body {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    text-align: left;
+  }
+  .story-body p + p { margin-top: 20px; }
+
+  /* HOW IT WORKS */
+  .how {
+    background: white;
+    padding: 100px 24px;
+  }
+  .how-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .how-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .section-body {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .step {
+    background: white;
+    padding: 40px 36px;
+    position: relative;
+  }
+  .step-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    color: rgba(192,57,43,0.12);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+  .step-title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .step-body {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .step-tag {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+    background: rgba(192,57,43,0.07);
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  /* FEATURES */
+  .features {
+    padding: 100px 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .features-header { text-align: center; margin-bottom: 64px; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .feature-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .feature-card:hover {
+    border-color: rgba(192,57,43,0.3);
+    transform: translateY(-3px);
+  }
+  .feature-icon {
+    width: 40px; height: 40px;
+    background: rgba(192,57,43,0.08);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  .feature-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .feature-body {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* TECH */
+  .tech {
+    background: var(--ink);
+    padding: 80px 24px;
+    color: white;
+  }
+  .tech-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .tech-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(24px, 3.5vw, 36px);
+    color: white;
+    margin-bottom: 12px;
+  }
+  .tech-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 48px;
+  }
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+  .tech-pill {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+    font-weight: 400;
+    padding: 8px 20px;
+    border-radius: 100px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .tech-pill:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.25);
+  }
+  .tech-pill strong {
+    color: white;
+    font-weight: 500;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 120px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(192,57,43,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    color: var(--ink);
+    max-width: 600px;
+    margin: 0 auto 16px;
+    line-height: 1.15;
+  }
+  .cta-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+  .cta-note {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .cta-note a { color: var(--red); text-decoration: none; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--red);
+    text-decoration: none;
+  }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .footer-link {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-link:hover { color: var(--ink); }
+  .footer-note {
+    font-size: 12px;
+    color: var(--border);
+  }
+
+  /* ANIMATION */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    nav .nav-link { display: none; }
+    footer { flex-direction: column; text-align: center; padding: 24px; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Aid<span>First</span></a>
+  <a href="#how" class="nav-link">How it works</a>
+  <a href="https://www.kaggle.com/code/mrunmayeekumthekar/finalgemma" target="_blank" class="nav-cta">Try AidFirst →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Gemma 4 Good Hackathon · Health Track</div>
+  <h1 class="hero-title">Because emergencies<br>don't speak <em>one language</em></h1>
+  <p class="hero-subtitle">AidFirst helps untrained caregivers understand medical emergencies — in their language, on their phone, without internet.</p>
+  <div class="hero-actions">
+    <a href="https://www.kaggle.com/code/mrunmayeekumthekar/finalgemma" target="_blank" class="btn-primary">Try AidFirst on Kaggle →</a>
+    <a href="https://github.com/mrunmayeekumthekar123/aidfirst" target="_blank" class="btn-secondary">View on GitHub ↗</a>
+  </div>
+  <div class="hero-langs">
+    <span class="lang-tag">English</span>
+    <span class="lang-sep">·</span>
+    <span class="lang-tag">हिंदी</span>
+    <span class="lang-sep">·</span>
+    <span class="lang-tag">Hinglish</span>
+    <span class="lang-sep">·</span>
+    <span class="lang-tag">140+ languages understood</span>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story reveal">
+  <span class="section-label">Why AidFirst exists</span>
+  <p class="story-quote">My grandfather passed away two months ago. A caregiver missed the signs. <em>Not knowing made us reluctant to act.</em></p>
+  <div class="story-body">
+    <p>He was 85, had Parkinson's, and had suffered multiple brain strokes. One night his breathing became gritty and labored. The caregiver assured us everything was fine. We believed her. He passed away that night.</p>
+    <p>AidFirst is built for that moment — when someone is sick, you're scared, and you don't know what to do. It won't diagnose. It will help you understand how serious the situation is, in plain language, in your language, and tell you exactly what to do next.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header reveal">
+      <span class="section-label">How it works</span>
+      <h2 class="section-title">Three steps. Any language. Any phone.</h2>
+      <p class="section-body">No medical training needed. No English required. Just describe what you see.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Describe what's happening</div>
+        <div class="step-body">Speak in any language, type in broken sentences, or send a photo of the patient. AidFirst understands all of it.</div>
+        <span class="step-tag">Voice · Text · Photo</span>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">AidFirst asks smart questions</div>
+        <div class="step-body">One simple question at a time. Gemma 4 builds a picture of the situation while giving you immediate guidance on what to do right now.</div>
+        <span class="step-tag">Powered by Gemma 4 E4B</span>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Get a clear verdict</div>
+        <div class="step-body">Keep watching, go to a doctor, or call an ambulance immediately. In your language. With step-by-step instructions. As audio too.</div>
+        <span class="step-tag">Hindi · English · Audio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="features-header reveal">
+    <span class="section-label">Features</span>
+    <h2 class="section-title">Built for the real world</h2>
+    <p class="section-body">Every feature exists because someone, somewhere, needed it to exist.</p>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <div class="feature-title">Multilingual</div>
+      <div class="feature-body">Understands 140+ languages. Responds in Hindi or English. Recognizes Hinglish, broken grammar, and panicked short sentences.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎤</div>
+      <div class="feature-title">Voice input</div>
+      <div class="feature-body">Upload a voice memo in any language. Whisper transcribes it and Gemma 4 reasons over it — no typing needed in a crisis.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📷</div>
+      <div class="feature-title">Photo analysis</div>
+      <div class="feature-body">Send a photo of the patient. AidFirst observes visible symptoms — pale lips, skin color, swelling — and factors them into the assessment.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📵</div>
+      <div class="feature-title">Offline ready</div>
+      <div class="feature-body">Runs entirely on-device using Gemma 4 E4B. No internet required after setup. Works in villages, remote areas, anywhere.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔊</div>
+      <div class="feature-title">Audio responses</div>
+      <div class="feature-body">Every response is read aloud in the caregiver's language. Because in a panic, reading is hard. Hearing is easier.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚠️</div>
+      <div class="feature-title">Emergency detection</div>
+      <div class="feature-body">Confirms multiple danger signs before escalating. Never calls emergency on a single symptom. Bilingual alert with immediate instructions.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH -->
+<section class="tech reveal">
+  <div class="tech-inner">
+    <h2 class="tech-title">Built on Gemma 4</h2>
+    <p class="tech-sub">Using every capability the model was designed for — vision, audio, multilingual reasoning, agentic questioning — in one unified pipeline.</p>
+    <div class="tech-stack">
+      <span class="tech-pill"><strong>Gemma 4 E4B</strong> · Core AI</span>
+      <span class="tech-pill"><strong>Whisper</strong> · Speech to text</span>
+      <span class="tech-pill"><strong>gTTS</strong> · Text to speech</span>
+      <span class="tech-pill"><strong>HuggingFace Transformers</strong></span>
+      <span class="tech-pill"><strong>Kaggle</strong> · Free GPU</span>
+      <span class="tech-pill"><strong>IPython Widgets</strong> · UI</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <h2 class="cta-title">Try AidFirst right now</h2>
+  <p class="cta-sub">Free. No account needed beyond Kaggle. Runs in your browser.</p>
+  <a href="https://www.kaggle.com/code/mrunmayeekumthekar/finalgemma" target="_blank" class="btn-primary">Open on Kaggle →</a>
+  <p class="cta-note">Built by a second-year engineering student from Pune, India · <a href="https://github.com/mrunmayeekumthekar123/aidfirst" target="_blank">GitHub</a></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">AidFirst</a>
+  <div class="footer-links">
+    <a href="https://github.com/mrunmayeekumthekar123/aidfirst" target="_blank" class="footer-link">GitHub</a>
+    <a href="https://www.kaggle.com/code/mrunmayeekumthekar/finalgemma" target="_blank" class="footer-link">Kaggle Notebook</a>
+    <a href="https://www.kaggle.com/competitions/gemma-4-good-hackathon" target="_blank" class="footer-link">Hackathon</a>
+  </div>
+  <span class="footer-note">Gemma 4 Good Hackathon 2026</span>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
