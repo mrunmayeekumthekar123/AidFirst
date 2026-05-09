@@ -82,7 +82,7 @@ I keep thinking — if someone had known what to look for, maybe something could
 
 ## Hackathon Track
 
-Submitted under the **Health** track of the Gemma 4 Good Hackathon.
+Submitted under the **Main** track as well as **Impact** track of the Gemma 4 Good Hackathon.
 
 ---
 
