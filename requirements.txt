@@ -1,6 +1,0 @@
-streamlit
-huggingface-hub>=1.5.0
-gtts
-pillow
-openai-whisper
-torch
