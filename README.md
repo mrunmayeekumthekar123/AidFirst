@@ -70,7 +70,7 @@ We weren't negligent. We just didn't know. Not knowing made us reluctant to act.
 
 ## Demo
 
-[Watch the demo video](#) ← updated after demo day
+[https://youtu.be/eAAUNGVemF0https://youtu.be/eAAUNGVemF0](#) 
 
 ---
 
